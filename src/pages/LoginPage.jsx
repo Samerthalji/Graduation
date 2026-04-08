@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../Api/axiosConfig'; 
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -14,12 +15,46 @@ export default function LoginPage() {
     return e;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const e2 = validate();
-    if (Object.keys(e2).length > 0) { setErrors(e2); return; }
-    navigate('/home');
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // التحقق من الأخطاء يدوياً (الذي قمت بكتابته سابقاً)
+  const e2 = validate();
+  if (Object.keys(e2).length > 0) {
+    setErrors(e2);
+    return;
+  }
+
+  try {
+    // 2. إرسال الطلب للباك اند
+    const response = await api.post('/Auth/login', {
+      email: form.email,
+      password: form.password
+    });
+
+    // 3. إذا كانت الاستجابة ناجحة (كود 200)
+    if (response.status === 200) {
+      console.log("تم تسجيل الدخول بنجاح!", response.data);
+      
+      // حفظ التوكن (Token) إذا كان الباك اند يرسله
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+
+      // الانتقال لصفحة الهوم
+      navigate('/home');
+    }
+  } catch (error) {
+    // 4. معالجة الأخطاء (مثل خطأ 500 الذي ظهر في Swagger)
+    console.error("Login Error:", error.response);
+    
+    const serverMessage = error.response?.data?.message || "حدث خطأ في السيرفر، يرجى المحاولة لاحقاً";
+    
+    // عرض رسالة الخطأ للمستخدم
+    setErrors({ server: serverMessage });
+    alert(serverMessage); 
+  }
+};
 
   return (
     <div className="bg-gray-50 antialiased font-sans min-h-screen flex items-center justify-center p-2">
