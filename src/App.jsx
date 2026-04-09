@@ -11,6 +11,10 @@ import ReviewApplicationPage from './pages/ReviewApplicationPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import CreateCompanyPage from './pages/CreateCompanyPage';
+import ForgotPassword from './pages/ForgotPassword';
+import PasswordVerification from './pages/PasswordVerification';
+import ResetPassword from './pages/ResetPassword';
+import EmailVerification from './pages/EmailVerification';
 
 export default function App() {
   return (
@@ -22,6 +26,10 @@ export default function App() {
         <Route path="/applications" element={<MyApplicationsPage />} />
         <Route path="/saved" element={<SavedJobsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/password-verification" element={<PasswordVerification />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/email-verification" element={<EmailVerification />} />
         <Route path="/job/:id" element={<JobApplicationPage />} />
         <Route path="/review-application/:id" element={<ReviewApplicationPage />} />
         <Route path="/login" element={<LoginPage />} />

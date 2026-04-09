@@ -18,7 +18,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
   e.preventDefault();
   
-  // التحقق من الأخطاء يدوياً (الذي قمت بكتابته سابقاً)
+
   const e2 = validate();
   if (Object.keys(e2).length > 0) {
     setErrors(e2);
@@ -32,25 +32,25 @@ export default function LoginPage() {
       password: form.password
     });
 
-    // 3. إذا كانت الاستجابة ناجحة (كود 200)
+    
     if (response.status === 200) {
       console.log("تم تسجيل الدخول بنجاح!", response.data);
       
-      // حفظ التوكن (Token) إذا كان الباك اند يرسله
+      
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
       }
 
-      // الانتقال لصفحة الهوم
+      
       navigate('/home');
     }
   } catch (error) {
-    // 4. معالجة الأخطاء (مثل خطأ 500 الذي ظهر في Swagger)
+    
     console.error("Login Error:", error.response);
     
     const serverMessage = error.response?.data?.message || "حدث خطأ في السيرفر، يرجى المحاولة لاحقاً";
     
-    // عرض رسالة الخطأ للمستخدم
+
     setErrors({ server: serverMessage });
     alert(serverMessage); 
   }
@@ -92,7 +92,7 @@ export default function LoginPage() {
             <div>
               <div className="flex justify-between mb-2">
                 <label className="block text-sm font-semibold text-indigo-900 px-5">Password</label>
-                <Link to="#" className="text-sm text-blue-800 font-bold hover:underline">Forgot?</Link>
+                <Link to="/forgot-password" className="text-sm text-blue-800 font-bold hover:underline">Forgot?</Link>
               </div>
               <input type="password" placeholder="••••••••"
                 value={form.password} onChange={e => setForm({ ...form, password: e.target.value })}
